@@ -1,0 +1,16 @@
+name: ItemSkin
+main: icu.suc.kevin557.itemskin.ItemSkin
+version: 1.0.0
+author: Kevin_557
+depend: [Vault, ProtocolLib]
+commands:
+  itemskin:
+    permission: itemskin.reload
+  skinmenu:
+    aliases: [is, iskin, bskin]
+    permission: itemskin.menu
+permissions:
+  itemskin.reload:
+    default: op
+  itemskin.menu:
+    default: true
