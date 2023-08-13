@@ -6,7 +6,9 @@ import icu.suc.kevin557.itemskin.commands.AbstractCommand;
 import icu.suc.kevin557.itemskin.commands.ItemSkinCommand;
 import icu.suc.kevin557.itemskin.commands.SkinMenuCommand;
 import icu.suc.kevin557.itemskin.configs.I18n;
+import icu.suc.kevin557.itemskin.configs.Settings;
 import icu.suc.kevin557.itemskin.listeners.InventoryListener;
+import icu.suc.kevin557.itemskin.listeners.ItemListener;
 import icu.suc.kevin557.itemskin.listeners.PlayerListener;
 import icu.suc.kevin557.itemskin.listeners.SlotListener;
 import icu.suc.kevin557.itemskin.managements.MenuManager;
@@ -15,6 +17,7 @@ import icu.suc.kevin557.itemskin.managements.SkinManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +27,8 @@ public class ItemSkin extends JavaPlugin
 {
     private static ItemSkin instance;
     private Economy economy = null;
+
+    public Settings settings;
 
     private ProtocolManager protocolManager;
     private SkinManager skinManager;
@@ -44,13 +49,16 @@ public class ItemSkin extends JavaPlugin
         super.onEnable();
 
         instance = this;
+        settings = new Settings();
         setupEconomy();
+
+        skinManager = new SkinManager(new File(getDataFolder(), "skins.yml"));
+        playerManager = new PlayerManager(new File(getDataFolder(), "data"));
+        menuManager = new MenuManager();
 
         I18n.init(new File(getDataFolder(), "messages.properties"));
         saveConfigs();
         loadConfigs();
-
-        menuManager = new MenuManager();
 
         registerEvents();
         registerCommands();
@@ -60,14 +68,21 @@ public class ItemSkin extends JavaPlugin
     {
         I18n.load();
 
-        skinManager = new SkinManager();
-        skinManager.load(getConfig());
-        playerManager = new PlayerManager();
+        Configuration configuration = getConfig();
+        settings.disableInCreative = configuration.getBoolean("disable-in-creative", true);
+
+        skinManager.load();
+        playerManager.load();
     }
 
     private void saveConfigs()
     {
         saveDefaultConfig();
+
+        if (skinManager.getFile() != null && !skinManager.getFile().exists())
+        {
+            saveResource("skins.yml", false);
+        }
 
         if (I18n.FILE != null && !I18n.FILE.exists())
         {
@@ -84,6 +99,7 @@ public class ItemSkin extends JavaPlugin
     private void registerEvents()
     {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         protocolManager.addPacketListener(new SlotListener(this));
     }

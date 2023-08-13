@@ -9,6 +9,7 @@ import icu.suc.kevin557.itemskin.ItemSkin;
 import icu.suc.kevin557.itemskin.skin.Skin;
 import icu.suc.kevin557.itemskin.skin.SkinGroup;
 import icu.suc.kevin557.itemskin.utils.data.MaterialData;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,13 @@ public class SlotListener extends PacketAdapter
     public void onPacketSending(final PacketEvent event)
     {
         if (event.isCancelled())
+        {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (player.getGameMode() == GameMode.CREATIVE && ItemSkin.getInstance().settings.disableInCreative)
         {
             return;
         }
@@ -55,8 +63,6 @@ public class SlotListener extends PacketAdapter
         {
             return;
         }
-
-        Player player = event.getPlayer();
 
         Skin skin = ItemSkin.getInstance().getPlayerManager().getSelectedSkin(player, group);
         MaterialData skinMaterialData = skin.getMaterialData();

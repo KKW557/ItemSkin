@@ -7,7 +7,7 @@ commands:
   itemskin:
     permission: itemskin.reload
   skinmenu:
-    aliases: [is, iskin, bskin]
+    aliases: [is, bs, iskin, bskin]
     permission: itemskin.menu
 permissions:
   itemskin.reload:

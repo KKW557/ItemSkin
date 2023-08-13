@@ -79,7 +79,7 @@ public class InventoryListener implements Listener
                     {
                         if (!ItemSkin.getInstance().getPlayerManager().getSelectedSkin(player, context.getGroup()).equals(skin))
                         {
-                            ItemSkin.getInstance().getPlayerManager().setSelectedSkin(player, context.getGroup(), skin);
+                            ItemSkin.getInstance().getPlayerManager().setSelectedSkinAndCall(player, context.getGroup(), skin);
                             ChatUtils.sendMessage(player, I18n.format("selectSuccess", skinName));
                         }
                     }
@@ -105,7 +105,7 @@ public class InventoryListener implements Listener
                                 economy.withdrawPlayer(player, price);
                                 ItemSkin.getInstance().getPlayerManager().addSkin(player, context.getGroup(), skin);
                                 ChatUtils.sendMessage(player, I18n.format("gotSkin", economy.format(price), skinName));
-                                ItemSkin.getInstance().getPlayerManager().setSelectedSkin(player, context.getGroup(), skin);
+                                ItemSkin.getInstance().getPlayerManager().setSelectedSkinAndCall(player, context.getGroup(), skin);
                                 ChatUtils.sendMessage(player, I18n.format("selectSuccess", skinName));
                             }
                         }

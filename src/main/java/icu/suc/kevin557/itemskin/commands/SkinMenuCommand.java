@@ -5,9 +5,11 @@ import icu.suc.kevin557.itemskin.ItemSkin;
 import icu.suc.kevin557.itemskin.configs.I18n;
 import icu.suc.kevin557.itemskin.skin.SkinGroup;
 import icu.suc.kevin557.itemskin.utils.ChatUtils;
+import icu.suc.kevin557.itemskin.utils.data.MaterialData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Set;
@@ -23,17 +25,34 @@ public class SkinMenuCommand extends AbstractCommand
             return true;
         }
 
+        ItemSkin itemSkin = ItemSkin.getInstance();
+
+        Player player = (Player) sender;
+
         if (args.length == 1)
         {
-            Player player = (Player) sender;
-
-            ItemSkin itemSkin = ItemSkin.getInstance();
-
             SkinGroup group = itemSkin.getSkinManager().getSkinGroups().get(args[0]);
 
             if (group == null)
             {
                 ChatUtils.sendMessage(player, I18n.format("illegalGroup", args[0]));
+            }
+            else
+            {
+                itemSkin.getMenuManager().openMenu(player, group, 1);
+            }
+        }
+        else if (args.length == 0)
+        {
+            ItemStack itemStack = player.getInventory().getItemInHand();
+
+            MaterialData materialData = new MaterialData(itemStack.getType(), itemStack.getDurability());
+
+            SkinGroup group = ItemSkin.getInstance().getSkinManager().getMaterialTable().get(materialData);
+
+            if (group == null)
+            {
+                ChatUtils.sendMessage(player, I18n.format("noGroup"));
             }
             else
             {

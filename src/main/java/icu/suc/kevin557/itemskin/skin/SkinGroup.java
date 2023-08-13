@@ -9,11 +9,13 @@ public class SkinGroup
 {
     private final String name;
     private final Map<String, Skin> skins;
+    private final Map<Skin, String> skinsInverse;
 
     public SkinGroup(String name)
     {
         this.name = name;
         this.skins = Maps.newLinkedHashMap();
+        this.skinsInverse = Maps.newHashMap();
     }
 
     public Skin getDefaultSkin()
@@ -29,6 +31,11 @@ public class SkinGroup
     public Map<String, Skin> getSkins()
     {
         return skins;
+    }
+
+    public Map<Skin, String> getSkinsInverse()
+    {
+        return skinsInverse;
     }
 
     @Override

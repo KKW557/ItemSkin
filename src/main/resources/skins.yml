@@ -1,0 +1,56 @@
+example-wools:
+  name: "Example Wools"
+  skins:
+    default-wool:
+      material:
+        type: WOOL
+    named-wool:
+      name: "\u00a7bNamed Wool"
+      material:
+        type: WOOL
+        data: 8
+    buyable-wool:
+      price: 23.3
+      material:
+        type: WOOL
+        data: 7
+    unbuyable-wool:
+      material:
+        type: WOOL
+        data: 15
+example-stones:
+  name: "Example Stones"
+  skins:
+    stone:
+      material:
+        type: STONE
+    granite:
+      price: 100
+      material:
+        type: STONE
+        data: 1
+    polished-granite:
+      price: 200
+      material:
+        type: STONE
+        data: 2
+    diorite:
+      price: 100
+      material:
+        type: STONE
+        data: 3
+    polished-diorite:
+      price: 200
+      material:
+        type: STONE
+        data: 4
+    andesite:
+      price: 100
+      material:
+        type: STONE
+        data: 5
+    polished-andesite:
+      price: 200
+      material:
+        type: STONE
+        data: 6
