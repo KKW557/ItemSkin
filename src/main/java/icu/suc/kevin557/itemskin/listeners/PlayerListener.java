@@ -13,6 +13,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -119,8 +120,50 @@ public class PlayerListener implements Listener
         item.setItemStack(itemStack);
     }
 
-//    @EventHandler
-//    public void onPlayerGameModeChange(final PlayerGameModeChangeEvent event)
-//    {
-//    }
+    @EventHandler
+    public void onPlayerGameModeChange(final PlayerGameModeChangeEvent event)
+    {
+        GameMode gameMode = event.getNewGameMode();
+
+        if (gameMode != GameMode.SURVIVAL && gameMode != GameMode.ADVENTURE)
+        {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        for (ItemStack itemStack : player.getInventory())
+        {
+            applySkin(itemStack, player);
+        }
+
+        for (ItemStack itemStack : player.getInventory().getArmorContents())
+        {
+            applySkin(itemStack, player);
+        }
+    }
+
+    private void applySkin(ItemStack itemStack, Player player)
+    {
+        if (itemStack == null || itemStack.getType() == Material.AIR)
+        {
+            return;
+        }
+
+        MaterialData materialData = new MaterialData(itemStack.getType(), itemStack.getDurability());
+
+        SkinGroup group = ItemSkin.getInstance().getSkinManager().getMaterialTable().get(materialData);
+
+        Skin skin = ItemSkin.getInstance().getPlayerManager().getSelectedSkin(player, group);
+
+        MaterialData skinMaterialData = skin.getMaterialData();
+
+        if (skinMaterialData.equals(materialData))
+        {
+            return;
+        }
+
+        itemStack.setType(skinMaterialData.getType());
+        itemStack.setDurability(skinMaterialData.getData());
+    }
 }

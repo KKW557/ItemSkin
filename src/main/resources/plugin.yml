@@ -1,6 +1,6 @@
 name: ItemSkin
 main: icu.suc.kevin557.itemskin.ItemSkin
-version: 1.0.0
+version: 1.0.1
 author: Kevin_557
 depend: [Vault, ProtocolLib]
 commands:
