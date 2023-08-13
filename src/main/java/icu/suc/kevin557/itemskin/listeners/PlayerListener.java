@@ -154,6 +154,11 @@ public class PlayerListener implements Listener
 
         SkinGroup group = ItemSkin.getInstance().getSkinManager().getMaterialTable().get(materialData);
 
+        if (group == null)
+        {
+            return;
+        }
+
         Skin skin = ItemSkin.getInstance().getPlayerManager().getSelectedSkin(player, group);
 
         MaterialData skinMaterialData = skin.getMaterialData();
