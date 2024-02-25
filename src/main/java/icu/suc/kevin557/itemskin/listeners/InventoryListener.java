@@ -25,12 +25,13 @@ public class InventoryListener implements Listener
     public void onInventoryClick(final InventoryClickEvent event)
     {
         Inventory inventory = event.getClickedInventory();
-
         if (ItemSkin.getInstance().getMenuManager().getInventories().containsKey(inventory))
         {
             Player player = (Player) inventory.getHolder();
             int slot = event.getRawSlot();
-
+            if (inventory.getItem(slot)==null||inventory.getItem(slot).getType().equals(Material.AIR)){
+                return;
+            }
             MenuManager.Context context = ItemSkin.getInstance().getMenuManager().getInventories().get(inventory);
 
             if ((slot == MenuManager.LEFT_SLOT || slot == MenuManager.REST_SLOT) && event.getView().getItem(slot).getType() == Material.ARROW)
